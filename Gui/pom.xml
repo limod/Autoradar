@@ -11,7 +11,7 @@
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
-         <maven.assembly.plugin.version>2.4</maven.assembly.plugin.version>
+        <maven.assembly.plugin.version>2.4</maven.assembly.plugin.version>
     </properties>
     
     <dependencies>
@@ -19,6 +19,11 @@
             <groupId>de.limod</groupId>
             <artifactId>Portals</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
         </dependency>
 
     </dependencies>

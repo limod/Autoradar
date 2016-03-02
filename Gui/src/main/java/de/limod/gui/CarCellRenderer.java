@@ -25,12 +25,16 @@ public class CarCellRenderer extends DefaultTableCellRenderer {
         Car car1 = model.getRow(row);
         if(car1.getIsNew()){
             c.setBackground(Color.GREEN);
+            c.setForeground(Color.GRAY);
         } else {
             c.setBackground(table.getBackground());
+            c.setForeground(table.getForeground());
         }
-//        if (!isSelected) {
-//            c.setBackground(model.getRowColour(row));
-//        }
+        if (isSelected) {
+            c.setForeground(Color.DARK_GRAY);
+        } else {
+             c.setForeground(table.getForeground());
+        }
 //        return super.getTableCellRendererComponent(table, value, hasFocus, hasFocus, row, column);
         return c;
     }

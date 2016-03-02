@@ -32,6 +32,7 @@ import org.jsoup.select.Elements;
 public abstract class Portal {
 
     private String query;
+    static int MAX_HITS = 10;
 
     public abstract List<Car> getCars();
 

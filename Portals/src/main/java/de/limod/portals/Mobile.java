@@ -47,7 +47,7 @@ public class Mobile extends Portal {
             Car c = new Car(title, created, price, url, "Mobile", id);
             c.setFound(new Date());
             cars.add(c);
-            if(cars.size() > 4){
+            if(cars.size() > Portal.MAX_HITS){
                 break;
             }
         }

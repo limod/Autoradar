@@ -65,7 +65,7 @@ public class AutoScout extends Portal {
                 c.setFound(new Date());
 
                 cars.add(c);
-                if (cars.size() > 5) {
+                if (cars.size() > Portal.MAX_HITS) {
                     break;
                 }
             }

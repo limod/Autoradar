@@ -11,6 +11,8 @@ import de.limod.portals.EbayKleinanzeigen;
 import de.limod.portals.Mobile;
 import de.limod.portals.Portal;
 import java.awt.Desktop;
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,9 +20,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.ListSelectionModel;
@@ -33,18 +39,36 @@ import javax.swing.SwingWorker;
 public class AutoradarUI extends javax.swing.JFrame {
 
     private final static Logger LOGGER = Logger.getLogger(AutoradarUI.class.getName());
+    private final static int TIMEOUT = 900000;  // Refresh interval in milliseconds
+    private final static String RECIPIENT = "buhm4nn@arcor.de";  // email
 
     // vw polo, radius 200km 84389, ab 2003, bis 5000 euro, max. 80.000km, neuste Angebote zuerst
-    static String mobileVwPolo = "?zipcodeRadius=200&grossPrice=true&damageUnrepaired=NO_DAMAGE_UNREPAIRED&scopeId=C&ambitAddress=DE%2C+84389&userPosition=48.41961%2C12.90542&minFirstRegistrationDate=2003-01-01&maxPrice=5000&maxMileage=80000&makeModelVariant1.makeId=25200&makeModelVariant1.modelId=27&isSearchRequest=true&sortOption.sortBy=creationTime&sortOption.sortOrder=DESCENDING";
-    static String autoscoutVwPolo = "?atype=C&make=74&model=-99&mmvmk0=74&mmvmd0=-99&mmvco=1&fregfrom=2003&priceto=5000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=pag&dtr";
-    static String ebayVwPolo = "s-autos/84389/preis::5000/vw-polo/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,80000";
+    static final String MOBILE_VW_POLO = "?zipcodeRadius=200&grossPrice=true&damageUnrepaired=NO_DAMAGE_UNREPAIRED&scopeId=C&ambitAddress=DE%2C+84389&userPosition=48.41961%2C12.90542&minFirstRegistrationDate=2003-01-01&maxPrice=5000&maxMileage=80000&makeModelVariant1.makeId=25200&makeModelVariant1.modelId=27&isSearchRequest=true&sortOption.sortBy=creationTime&sortOption.sortOrder=DESCENDING";
+    static final String MOBILE_SEAT_IBIZA = "?isSearchRequest=true&scopeId=C&sortOption.sortOrder=DESCENDING&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=80000&maxPrice=5000&makeModelVariant1.makeId=22500&makeModelVariant1.modelId=7&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
+    // smart for two bis 3500 euro
+    static final String MOBILE_SMART_FOR_TWO = "?isSearchRequest=true&sortOption.sortOrder=DESCENDING&scopeId=C&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=80000&maxPrice=3500&makeModelVariant1.makeId=23000&makeModelVariant1.modelId=4&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
+    // alle von 2500 bis 4000 euro, ab 2003, bis 80.000km mit CD
+    static final String MOBILE_ALL = "?isSearchRequest=true&sortOption.sortOrder=DESCENDING&scopeId=C&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=80000&minPrice=2500&maxPrice=4000&features=CD_PLAYER&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
+
+    static final String AUTOSCOUT_VW_POLO = "?atype=C&make=74&model=-99&mmvmk0=74&mmvmd0=-99&mmvco=1&fregfrom=2003&priceto=5000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=pag&dtr";
+    static final String AUTOSCOUT_SEAT_IBIZA = "?atype=C&make=64&model=2006&mmvmk0=64&mmvmd0=2006&mmvco=1&fregfrom=2003&priceto=5000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=||make|model&dtr=s";
+    // smart bis 3500
+    static final String AUTOSCOUT_SMART_FOR_TWO = "?atype=C&make=15525&model=18439&mmvmk0=15525&mmvmd0=18439&mmvco=1&fregfrom=2003&priceto=4000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=addB||price&dtr=s";
+    static final String AUTOSCOUT_ALL = "?atype=C&fregfrom=2003&pricefrom=2500&priceto=4000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=addB||price&dtr=s";
+
+    static final String EBAY_VW_POLO = "s-autos/84389/preis::5000/vw-polo/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,80000";
+    // bis 4500
+    static final String EBAY_SEAT_IBIZA = "s-autos/84389/preis::4500/seat-ibiza/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,80000";
+    static final String EBAY_SMART_FOR_TWO = "s-autos/84389/preis::3500/smart-fortwo/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,80000";
+    // alle von 2500 bis 4000 euro, ab 2003, bis 80.000km, Radius 150 km 
+    static final String EBAY_ALL = "s-autos/84389/preis:2500:4000/c216l5921r150+autos.ez_i:2003,+autos.km_i:,80000";
 
     SwingWorker worker = new SwingWorker<Object, Void>() {
         @Override
         public Object doInBackground() {
             while (!this.isCancelled()) {
                 try {
-                    Thread.sleep(60000);
+                    Thread.sleep(AutoradarUI.TIMEOUT);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(AutoradarUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -73,7 +97,7 @@ public class AutoradarUI extends javax.swing.JFrame {
                         newCar.setIsNew(true);
                         oldModel.addCar(0, newCar);
                         oldModel.fireTableDataChanged();
-                        AutoradarUI.playSound("/horn.wav");
+                        AutoradarUI.playSound("horn.wav");
                     }
                 }
 
@@ -98,7 +122,8 @@ public class AutoradarUI extends javax.swing.JFrame {
 
         initComponents();
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-
+//        Car c = new Car("titel", "16:30", "3.400", "http://foobar.de", "Mobile", "342324");
+//        AutoradarUI.sendMail(c);
         List<Car> newCars = AutoradarUI.getCars();
         CarModel newModel = new CarModel(newCars);
         tblCars.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -108,7 +133,7 @@ public class AutoradarUI extends javax.swing.JFrame {
         tblCars.getColumnModel().getColumn(1).setPreferredWidth(300);
         tblCars.getColumnModel().getColumn(2).setPreferredWidth(30);
         worker.execute();
-        
+        AutoradarUI.playSound("horn.wav");
         tblCars.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -139,10 +164,21 @@ public class AutoradarUI extends javax.swing.JFrame {
     private static List<Car> getCars() {
         List<Portal> polos = new ArrayList<Portal>();
 
-        polos.add(new Mobile(mobileVwPolo));
-        polos.add(new AutoScout(autoscoutVwPolo));
-        polos.add(new EbayKleinanzeigen(ebayVwPolo));
+        polos.add(new Mobile(MOBILE_VW_POLO));
+        polos.add(new AutoScout(AUTOSCOUT_VW_POLO));
+        polos.add(new EbayKleinanzeigen(EBAY_VW_POLO));
 
+        polos.add(new Mobile(MOBILE_SEAT_IBIZA));
+        polos.add(new AutoScout(AUTOSCOUT_SEAT_IBIZA));
+        polos.add(new EbayKleinanzeigen(EBAY_SEAT_IBIZA));
+        
+        polos.add(new Mobile(MOBILE_SMART_FOR_TWO));
+        polos.add(new AutoScout(AUTOSCOUT_SMART_FOR_TWO));
+        polos.add(new EbayKleinanzeigen(EBAY_SMART_FOR_TWO));
+        
+        polos.add(new Mobile(MOBILE_ALL));
+        polos.add(new AutoScout(AUTOSCOUT_ALL));
+        polos.add(new EbayKleinanzeigen(EBAY_ALL));
         List<Car> cars = new ArrayList<>();
 
         for (Portal portal : polos) {
@@ -154,22 +190,46 @@ public class AutoradarUI extends javax.swing.JFrame {
 
     public static synchronized void playSound(final String url) {
         new Thread(new Runnable() {
-  // The wrapper thread is unnecessary, unless it blocks on the
+            // The wrapper thread is unnecessary, unless it blocks on the
             // Clip finishing; see comments.
             public void run() {
                 try {
-                    Clip clip = AudioSystem.getClip();
                     AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                            AutoradarUI.class.getResourceAsStream(url));
+                            new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(url)));
+                    AudioFormat format = inputStream.getFormat();
+                    DataLine.Info info = new DataLine.Info(Clip.class, format);
+                    Clip clip = (Clip) AudioSystem.getLine(info);
                     clip.open(inputStream);
                     clip.start();
-                } catch (Exception e) {
-                    System.err.println("playsound: " +e.getMessage());
+                } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e1) {
+                    e1.printStackTrace();
                 }
             }
         }).start();
     }
 
+//    private static void sendMail(Car car){
+//        Properties props = new Properties();
+//         props.put("mail.arcor.de", "arcor");
+//        Session session = Session.getDefaultInstance(props, null);
+//        String msgBody = "Auto: %s, Preis: %s, URL: %s";
+//        try {
+//            Message msg = new MimeMessage(session);
+//            msg.setFrom(new InternetAddress("Autoradar@notexistens123.com", "Autoradar"));
+//            msg.addRecipient(Message.RecipientType.TO,
+//                             new InternetAddress(AutoradarUI.RECIPIENT, "Dominic"));
+//            msg.setSubject("Neues Auto: " + car.getTitle());
+//            msg.setText(String.format(msgBody, car.getTitle(),car.getPrice(),car.getUrl()));
+//            Transport.send(msg);
+//            AutoradarUI.LOGGER.info("Mail send");
+//        } catch (AddressException e) {
+//            AutoradarUI.LOGGER.info(e.getMessage());
+//        } catch (MessagingException e) {
+//            AutoradarUI.LOGGER.info(e.getMessage());
+//        } catch (UnsupportedEncodingException ex) {
+//            AutoradarUI.LOGGER.info(ex.getMessage());
+//        }
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
