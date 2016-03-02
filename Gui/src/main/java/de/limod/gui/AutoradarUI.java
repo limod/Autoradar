@@ -42,6 +42,7 @@ public class AutoradarUI extends javax.swing.JFrame {
     private final static int TIMEOUT = 900000;  // Refresh interval in milliseconds
     private final static String RECIPIENT = "buhm4nn@arcor.de";  // email
 
+    
     // vw polo, radius 200km 84389, ab 2003, bis 5000 euro, max. 80.000km, neuste Angebote zuerst
     static final String MOBILE_VW_POLO = "?zipcodeRadius=200&grossPrice=true&damageUnrepaired=NO_DAMAGE_UNREPAIRED&scopeId=C&ambitAddress=DE%2C+84389&userPosition=48.41961%2C12.90542&minFirstRegistrationDate=2003-01-01&maxPrice=5000&maxMileage=80000&makeModelVariant1.makeId=25200&makeModelVariant1.modelId=27&isSearchRequest=true&sortOption.sortBy=creationTime&sortOption.sortOrder=DESCENDING";
     static final String MOBILE_SEAT_IBIZA = "?isSearchRequest=true&scopeId=C&sortOption.sortOrder=DESCENDING&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=80000&maxPrice=5000&makeModelVariant1.makeId=22500&makeModelVariant1.modelId=7&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
