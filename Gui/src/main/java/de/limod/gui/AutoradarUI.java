@@ -44,25 +44,25 @@ public class AutoradarUI extends javax.swing.JFrame {
 
     
     // vw polo, radius 200km 84389, ab 2003, bis 5000 euro, max. 80.000km, neuste Angebote zuerst
-    static final String MOBILE_VW_POLO = "?zipcodeRadius=200&grossPrice=true&damageUnrepaired=NO_DAMAGE_UNREPAIRED&scopeId=C&ambitAddress=DE%2C+84389&userPosition=48.41961%2C12.90542&minFirstRegistrationDate=2003-01-01&maxPrice=5000&maxMileage=80000&makeModelVariant1.makeId=25200&makeModelVariant1.modelId=27&isSearchRequest=true&sortOption.sortBy=creationTime&sortOption.sortOrder=DESCENDING";
-    static final String MOBILE_SEAT_IBIZA = "?isSearchRequest=true&scopeId=C&sortOption.sortOrder=DESCENDING&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=80000&maxPrice=5000&makeModelVariant1.makeId=22500&makeModelVariant1.modelId=7&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
+    static final String MOBILE_VW_POLO = "?zipcodeRadius=200&grossPrice=true&damageUnrepaired=NO_DAMAGE_UNREPAIRED&scopeId=C&ambitAddress=DE%2C+84389&userPosition=48.41961%2C12.90542&minFirstRegistrationDate=2003-01-01&maxPrice=5000&maxMileage=90000&makeModelVariant1.makeId=25200&makeModelVariant1.modelId=27&isSearchRequest=true&sortOption.sortBy=creationTime&sortOption.sortOrder=DESCENDING";
+    static final String MOBILE_SEAT_IBIZA = "?isSearchRequest=true&scopeId=C&sortOption.sortOrder=DESCENDING&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=90000&maxPrice=5000&makeModelVariant1.makeId=22500&makeModelVariant1.modelId=7&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
     // smart for two bis 3500 euro
-    static final String MOBILE_SMART_FOR_TWO = "?isSearchRequest=true&sortOption.sortOrder=DESCENDING&scopeId=C&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=80000&maxPrice=3500&makeModelVariant1.makeId=23000&makeModelVariant1.modelId=4&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
+    static final String MOBILE_SMART_FOR_TWO = "?isSearchRequest=true&sortOption.sortOrder=DESCENDING&scopeId=C&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=90000&maxPrice=3500&makeModelVariant1.makeId=23000&makeModelVariant1.modelId=4&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
     // alle von 2500 bis 4000 euro, ab 2003, bis 80.000km mit CD
-    static final String MOBILE_ALL = "?isSearchRequest=true&sortOption.sortOrder=DESCENDING&scopeId=C&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=80000&minPrice=2500&maxPrice=4500&features=CD_PLAYER&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
+    static final String MOBILE_ALL = "?isSearchRequest=true&sortOption.sortOrder=DESCENDING&scopeId=C&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=90000&minPrice=2500&maxPrice=4500&features=CD_PLAYER&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
 
-    static final String AUTOSCOUT_VW_POLO = "?atype=C&make=74&model=-99&mmvmk0=74&mmvmd0=-99&mmvco=1&fregfrom=2003&priceto=5000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=pag&dtr";
-    static final String AUTOSCOUT_SEAT_IBIZA = "?atype=C&make=64&model=2006&mmvmk0=64&mmvmd0=2006&mmvco=1&fregfrom=2003&priceto=5000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=||make|model&dtr=s";
+    static final String AUTOSCOUT_VW_POLO = "?atype=C&make=74&model=-99&mmvmk0=74&mmvmd0=-99&mmvco=1&fregfrom=2003&priceto=5000&kmto=90000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=pag&dtr";
+    static final String AUTOSCOUT_SEAT_IBIZA = "?atype=C&make=64&model=2006&mmvmk0=64&mmvmd0=2006&mmvco=1&fregfrom=2003&priceto=5000&kmto=90000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=||make|model&dtr=s";
     // smart bis 3500
-    static final String AUTOSCOUT_SMART_FOR_TWO = "?atype=C&make=15525&model=18439&mmvmk0=15525&mmvmd0=18439&mmvco=1&fregfrom=2003&priceto=4000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=addB||price&dtr=s";
-    static final String AUTOSCOUT_ALL = "?atype=C&fregfrom=2003&pricefrom=2500&priceto=4500&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=addB||price&dtr=s";
+    static final String AUTOSCOUT_SMART_FOR_TWO = "?atype=C&make=15525&model=18439&mmvmk0=15525&mmvmd0=18439&mmvco=1&fregfrom=2003&priceto=4000&kmto=90000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=addB||price&dtr=s";
+    static final String AUTOSCOUT_ALL = "?atype=C&fregfrom=2003&pricefrom=2500&priceto=4500&kmto=90000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=addB||price&dtr=s";
 
-    static final String EBAY_VW_POLO = "s-autos/84389/preis::5000/vw-polo/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,80000";
+    static final String EBAY_VW_POLO = "s-autos/84389/preis::5000/vw-polo/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,90000";
     // bis 4500
-    static final String EBAY_SEAT_IBIZA = "s-autos/84389/preis::4500/seat-ibiza/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,80000";
-    static final String EBAY_SMART_FOR_TWO = "s-autos/84389/preis::3500/smart-fortwo/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,80000";
+    static final String EBAY_SEAT_IBIZA = "s-autos/84389/preis::4500/seat-ibiza/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,90000";
+    static final String EBAY_SMART_FOR_TWO = "s-autos/84389/preis::3500/smart-fortwo/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,90000";
     // alle von 2500 bis 4000 euro, ab 2003, bis 80.000km, Radius 150 km 
-    static final String EBAY_ALL = "s-autos/84389/preis:2500:4500/c216l5921r150+autos.ez_i:2003,+autos.km_i:,80000";
+    static final String EBAY_ALL = "s-autos/84389/preis:2500:4500/c216l5921r150+autos.ez_i:2003,+autos.km_i:,90000";
 
     SwingWorker worker = new SwingWorker<Object, Void>() {
         @Override
