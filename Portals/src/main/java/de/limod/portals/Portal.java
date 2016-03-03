@@ -5,8 +5,6 @@ package de.limod.portals;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +30,16 @@ import org.jsoup.select.Elements;
 public abstract class Portal {
 
     private String query;
-    static int MAX_HITS = 10;
+    private int maxHits = 10;
+
+    public Portal(int maxHits) {
+        this(maxHits, "");
+    }
+
+    public Portal(int maxHits, String query) {
+        this.query = query;
+        this.maxHits = maxHits;
+    }
 
     public abstract List<Car> getCars();
 
@@ -71,12 +78,11 @@ public abstract class Portal {
 
             document = Jsoup.parse(String.valueOf(tmp));
             return document;
-            
+
 //            File input = new File(provider+".html");
 //            System.out.println("read file");
 //            Document doc = Jsoup.parse(input, "UTF-8", host);
 //            return doc;
-            
         } catch (MalformedURLException ex) {
             Logger.getLogger(Portal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -93,4 +99,13 @@ public abstract class Portal {
     public void setQuery(String query) {
         this.query = query;
     }
+
+    public int getMaxHits() {
+        return maxHits;
+    }
+
+    public void setMaxHits(int maxHits) {
+        this.maxHits = maxHits;
+    }
+
 }

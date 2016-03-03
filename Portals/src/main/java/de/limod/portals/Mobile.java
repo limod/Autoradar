@@ -26,8 +26,12 @@ public class Mobile extends Portal {
     private static String SELECTOR_LINK = "a.link--muted.no--text--decoration";
     private static String SELECTOR_ID = "div.parking-block";
 
-    public Mobile(String query) {
-        super.setQuery(query);
+    public Mobile(int maxHits) {
+        super(maxHits);
+    }
+
+    public Mobile(int maxHits, String query) {
+        super(maxHits, query);
     }
 
     @Override
@@ -47,7 +51,7 @@ public class Mobile extends Portal {
             Car c = new Car(title, created, price, url, "Mobile", id);
             c.setFound(new Date());
             cars.add(c);
-            if(cars.size() > Portal.MAX_HITS){
+            if (cars.size() > this.getMaxHits()) {
                 break;
             }
         }
@@ -68,7 +72,7 @@ public class Mobile extends Portal {
 
     private String getCreated(Element result) {
         Elements t = result.select(Mobile.SELECTOR_CREATED);
-        return t.text().substring(20,t.text().length());
+        return t.text().substring(20, t.text().length());
     }
 
     private String getPrice(Element result) {

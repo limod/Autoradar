@@ -49,20 +49,20 @@ public class AutoradarUI extends javax.swing.JFrame {
     // smart for two bis 3500 euro
     static final String MOBILE_SMART_FOR_TWO = "?isSearchRequest=true&sortOption.sortOrder=DESCENDING&scopeId=C&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=80000&maxPrice=3500&makeModelVariant1.makeId=23000&makeModelVariant1.modelId=4&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
     // alle von 2500 bis 4000 euro, ab 2003, bis 80.000km mit CD
-    static final String MOBILE_ALL = "?isSearchRequest=true&sortOption.sortOrder=DESCENDING&scopeId=C&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=80000&minPrice=2500&maxPrice=4000&features=CD_PLAYER&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
+    static final String MOBILE_ALL = "?isSearchRequest=true&sortOption.sortOrder=DESCENDING&scopeId=C&sortOption.sortBy=creationTime&minFirstRegistrationDate=2003-01-01&maxMileage=80000&minPrice=2500&maxPrice=4500&features=CD_PLAYER&ambitCountry=DE&zipcode=84389&zipcodeRadius=200&maxPowerAsArray=KW&minPowerAsArray=KW";
 
     static final String AUTOSCOUT_VW_POLO = "?atype=C&make=74&model=-99&mmvmk0=74&mmvmd0=-99&mmvco=1&fregfrom=2003&priceto=5000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=pag&dtr";
     static final String AUTOSCOUT_SEAT_IBIZA = "?atype=C&make=64&model=2006&mmvmk0=64&mmvmd0=2006&mmvco=1&fregfrom=2003&priceto=5000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=||make|model&dtr=s";
     // smart bis 3500
     static final String AUTOSCOUT_SMART_FOR_TWO = "?atype=C&make=15525&model=18439&mmvmk0=15525&mmvmd0=18439&mmvco=1&fregfrom=2003&priceto=4000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=addB||price&dtr=s";
-    static final String AUTOSCOUT_ALL = "?atype=C&fregfrom=2003&pricefrom=2500&priceto=4000&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=addB||price&dtr=s";
+    static final String AUTOSCOUT_ALL = "?atype=C&fregfrom=2003&pricefrom=2500&priceto=4500&kmto=80000&cy=D&zip=84389&zipc=D&zipr=200&ustate=N,U&sort=age&desc=1&results=80&page=1&event=addB||price&dtr=s";
 
     static final String EBAY_VW_POLO = "s-autos/84389/preis::5000/vw-polo/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,80000";
     // bis 4500
     static final String EBAY_SEAT_IBIZA = "s-autos/84389/preis::4500/seat-ibiza/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,80000";
     static final String EBAY_SMART_FOR_TWO = "s-autos/84389/preis::3500/smart-fortwo/k0c216l5921r200+autos.ez_i:2003,+autos.km_i:,80000";
     // alle von 2500 bis 4000 euro, ab 2003, bis 80.000km, Radius 150 km 
-    static final String EBAY_ALL = "s-autos/84389/preis:2500:4000/c216l5921r150+autos.ez_i:2003,+autos.km_i:,80000";
+    static final String EBAY_ALL = "s-autos/84389/preis:2500:4500/c216l5921r150+autos.ez_i:2003,+autos.km_i:,80000";
 
     SwingWorker worker = new SwingWorker<Object, Void>() {
         @Override
@@ -165,21 +165,21 @@ public class AutoradarUI extends javax.swing.JFrame {
     private static List<Car> getCars() {
         List<Portal> polos = new ArrayList<Portal>();
 
-        polos.add(new Mobile(MOBILE_VW_POLO));
-        polos.add(new AutoScout(AUTOSCOUT_VW_POLO));
-        polos.add(new EbayKleinanzeigen(EBAY_VW_POLO));
+        polos.add(new Mobile(10,MOBILE_VW_POLO));
+        polos.add(new AutoScout(10,AUTOSCOUT_VW_POLO));
+        polos.add(new EbayKleinanzeigen(10,EBAY_VW_POLO));
 
-        polos.add(new Mobile(MOBILE_SEAT_IBIZA));
-        polos.add(new AutoScout(AUTOSCOUT_SEAT_IBIZA));
-        polos.add(new EbayKleinanzeigen(EBAY_SEAT_IBIZA));
+        polos.add(new Mobile(10,MOBILE_SEAT_IBIZA));
+        polos.add(new AutoScout(10,AUTOSCOUT_SEAT_IBIZA));
+        polos.add(new EbayKleinanzeigen(10,EBAY_SEAT_IBIZA));
         
-        polos.add(new Mobile(MOBILE_SMART_FOR_TWO));
-        polos.add(new AutoScout(AUTOSCOUT_SMART_FOR_TWO));
-        polos.add(new EbayKleinanzeigen(EBAY_SMART_FOR_TWO));
+        polos.add(new Mobile(10,MOBILE_SMART_FOR_TWO));
+        polos.add(new AutoScout(10,AUTOSCOUT_SMART_FOR_TWO));
+        polos.add(new EbayKleinanzeigen(10,EBAY_SMART_FOR_TWO));
         
-        polos.add(new Mobile(MOBILE_ALL));
-        polos.add(new AutoScout(AUTOSCOUT_ALL));
-        polos.add(new EbayKleinanzeigen(EBAY_ALL));
+        polos.add(new Mobile(15,MOBILE_ALL));
+        polos.add(new AutoScout(15,AUTOSCOUT_ALL));
+        polos.add(new EbayKleinanzeigen(15,EBAY_ALL));
         List<Car> cars = new ArrayList<>();
 
         for (Portal portal : polos) {

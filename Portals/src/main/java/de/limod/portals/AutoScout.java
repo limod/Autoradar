@@ -31,8 +31,13 @@ public class AutoScout extends Portal {
     private static final String SELECTOR_LINK = "a.detail";
     private static final String URL = "http://ww3.autoscout24.de/classified/%s";
 
-    public AutoScout(String query) {
-        super.setQuery(query);
+    public AutoScout(int maxHits) {
+        super(maxHits);
+    }
+
+    public AutoScout(int maxHits, String query) {
+//        super.setQuery(query);
+        super(maxHits, query);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class AutoScout extends Portal {
                 c.setFound(new Date());
 
                 cars.add(c);
-                if (cars.size() > Portal.MAX_HITS) {
+                if (cars.size() > this.getMaxHits()) {
                     break;
                 }
             }

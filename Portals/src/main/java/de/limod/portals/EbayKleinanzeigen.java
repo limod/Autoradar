@@ -25,8 +25,12 @@ public class EbayKleinanzeigen extends Portal {
     private static String SELECTOR_PRICE = "section.aditem-details strong";
     private static String SELECTOR_LINK = "section.aditem-main h2 a";
 
-    public EbayKleinanzeigen(String query) {
-        super.setQuery(query);
+    public EbayKleinanzeigen(int maxHits) {
+        super(maxHits);
+    }
+
+    public EbayKleinanzeigen(int maxHits, String query) {
+        super(maxHits, query);
     }
 
     @Override
@@ -46,7 +50,7 @@ public class EbayKleinanzeigen extends Portal {
             Car c = new Car(title, created, price, url, "EbayKleinanzeigen", id);
             c.setFound(new Date());
             cars.add(c);
-               if(cars.size() > Portal.MAX_HITS){
+            if (cars.size() > this.getMaxHits()) {
                 break;
             }
         }
